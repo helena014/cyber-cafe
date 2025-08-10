@@ -1,0 +1,2015 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>The Glitch Café - Cyberpunk Experience</title>
+    <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Share Tech Mono', monospace;
+            background: #000;
+            color: #00ff88;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Dynamic Rainbow Background */
+        .bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(45deg, #1a0033, #330066, #003366, #006633);
+            background-size: 400% 400%;
+            animation: gradientShift 8s ease infinite;
+        }
+
+        .bg-layer-1 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), transparent, rgba(255, 255, 0, 0.1));
+            animation: spin 20s linear infinite;
+        }
+
+        .bg-layer-2 {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            background: linear-gradient(225deg, rgba(0, 255, 136, 0.1), transparent, rgba(255, 0, 136, 0.1));
+            animation: bounce 15s ease-in-out infinite;
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+        }
+
+        /* Enhanced Floating Particles */
+        .particle {
+            position: absolute;
+            font-weight: bold;
+            animation: float 6s infinite linear;
+            pointer-events: none;
+            filter: drop-shadow(0 0 10px currentColor);
+            font-size: 18px;
+        }
+
+        .particle:nth-child(1n) { color: #ff4444; }
+        .particle:nth-child(2n) { color: #44ff44; }
+        .particle:nth-child(3n) { color: #4444ff; }
+        .particle:nth-child(4n) { color: #ffff44; }
+        .particle:nth-child(5n) { color: #ff44ff; }
+        .particle:nth-child(6n) { color: #44ffff; }
+        .particle:nth-child(7n) { color: #ff8844; }
+        .particle:nth-child(8n) { color: #8844ff; }
+
+        @keyframes float {
+            0% {
+                transform: translateY(100vh) translateX(0px);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-100px) translateX(100px);
+                opacity: 0;
+            }
+        }
+
+        /* Animated Scanlines */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: 
+                repeating-linear-gradient(
+                    0deg,
+                    transparent,
+                    transparent 2px,
+                    rgba(0, 255, 255, 0.03) 2px,
+                    rgba(0, 255, 255, 0.03) 4px
+                ),
+                repeating-linear-gradient(
+                    90deg,
+                    transparent,
+                    transparent 100px,
+                    rgba(255, 0, 255, 0.02) 100px,
+                    rgba(255, 0, 255, 0.02) 102px
+                );
+            pointer-events: none;
+            z-index: 1000;
+            animation: scanlineMove 0.1s linear infinite;
+            opacity: 0.2;
+        }
+
+        @keyframes scanlineMove {
+            0% { transform: translateY(0px); }
+            100% { transform: translateY(4px); }
+        }
+
+        /* Navigation */
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 50;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+            border-bottom: 2px solid #00ffff;
+            padding: 15px 0;
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            cursor: pointer;
+            animation: logoGlow 2s ease infinite;
+        }
+
+        @keyframes logoGlow {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.5); }
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 20px;
+            list-style: none;
+        }
+
+        .nav-links li {
+            cursor: pointer;
+            padding: 8px 16px;
+            border-radius: 8px;
+            transition: all 0.3s ease;
+            font-weight: bold;
+        }
+
+        .nav-links li:hover {
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            color: #000;
+            transform: scale(1.05);
+        }
+
+        .nav-links li.active {
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            color: #000;
+        }
+
+        .cart-icon {
+            position: relative;
+            cursor: pointer;
+            padding: 10px;
+            border-radius: 50%;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            color: #000;
+            font-weight: bold;
+            transition: transform 0.3s ease;
+        }
+
+        .cart-icon:hover {
+            transform: scale(1.1);
+        }
+
+        .cart-count {
+            position: absolute;
+            top: -5px;
+            right: -5px;
+            background: #ff0088;
+            color: #fff;
+            border-radius: 50%;
+            width: 20px;
+            height: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 12px;
+            animation: bounce 1s infinite;
+        }
+
+        .mobile-menu {
+            display: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+            color: #00ffff;
+        }
+
+        /* Main Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 10;
+        }
+
+        .page {
+            display: none;
+            padding-top: 100px;
+            min-height: 100vh;
+        }
+
+        .page.active {
+            display: block;
+        }
+
+        /* Enhanced Glitch Title */
+        .title {
+            font-family: 'Orbitron', monospace;
+            font-size: clamp(2rem, 8vw, 6rem);
+            font-weight: 900;
+            text-align: center;
+            margin: 40px 0;
+            position: relative;
+            background: linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ffff);
+            background-size: 400% 400%;
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: rainbowShift 3s ease infinite, titleGlitch 4s infinite;
+        }
+
+        .title::before,
+        .title::after {
+            content: attr(data-text);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #ff0088, #0088ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .title::before {
+            animation: glitchBefore 4s infinite;
+            z-index: -1;
+        }
+
+        .title::after {
+            animation: glitchAfter 4s infinite;
+            z-index: -2;
+            background: linear-gradient(45deg, #88ff00, #ff8800);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        @keyframes rainbowShift {
+            0%, 100% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+        }
+
+        @keyframes titleGlitch {
+            0%, 90%, 100% { transform: translate(0) skew(0deg); }
+            20% { transform: translate(-2px, 2px) skew(1deg); }
+            40% { transform: translate(-2px, -2px) skew(-1deg); }
+            60% { transform: translate(2px, 2px) skew(2deg); }
+            80% { transform: translate(2px, -2px) skew(-2deg); }
+        }
+
+        @keyframes glitchBefore {
+            0%, 90%, 100% { transform: translate(0); }
+            20% { transform: translate(2px, -2px); }
+            40% { transform: translate(-2px, 2px); }
+            60% { transform: translate(-2px, -2px); }
+            80% { transform: translate(2px, 2px); }
+        }
+
+        @keyframes glitchAfter {
+            0%, 90%, 100% { transform: translate(0); }
+            20% { transform: translate(-2px, -2px); }
+            40% { transform: translate(2px, 2px); }
+            60% { transform: translate(2px, -2px); }
+            80% { transform: translate(-2px, 2px); }
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 80vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            position: relative;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 4vw, 2rem);
+            color: #ffffff;
+            margin-bottom: 40px;
+            animation: bounce 2s infinite;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .btn {
+            padding: 15px 30px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            color: #000;
+        }
+
+        .btn-secondary {
+            background: linear-gradient(45deg, #ff00ff, #ffff00);
+            color: #000;
+        }
+
+        .btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        }
+
+        /* Features Section */
+        .features {
+            padding: 80px 0;
+            background: rgba(0, 0, 0, 0.8);
+        }
+
+        .features-title {
+            font-size: 3rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 60px;
+            background: linear-gradient(45deg, #00ff88, #0088ff);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .features-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        .feature-card {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border-radius: 15px;
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            transition: transform 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: scale(1.05);
+        }
+
+        .feature-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .feature-card h3 {
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .feature-card p {
+            color: #00ffff;
+            line-height: 1.6;
+        }
+
+        /* Menu Section */
+        .menu-section {
+            background: rgba(0, 0, 0, 0.8);
+            border: 4px solid transparent;
+            background-image: linear-gradient(rgba(0, 0, 0, 0.8), rgba(0, 0, 0, 0.8)), 
+                             linear-gradient(45deg, #00ffff, #ff00ff, #ffff00, #00ffff);
+            background-origin: border-box;
+            background-clip: content-box, border-box;
+            border-radius: 15px;
+            padding: 30px;
+            margin: 30px 0;
+            box-shadow: 
+                0 0 30px rgba(0, 255, 255, 0.3),
+                0 0 60px rgba(255, 0, 255, 0.2),
+                inset 0 0 30px rgba(0, 255, 136, 0.1);
+            position: relative;
+            overflow: hidden;
+            animation: sectionPulse 4s ease infinite;
+        }
+
+        @keyframes sectionPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.02); }
+        }
+
+        .section-title {
+            font-family: 'Orbitron', monospace;
+            font-size: 2rem;
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-align: center;
+            margin-bottom: 30px;
+            animation: titlePulse 2s ease infinite;
+        }
+
+        @keyframes titlePulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.7; }
+        }
+
+        .menu-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        .menu-item {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            animation: itemAppear 0.8s ease-in-out;
+            position: relative;
+        }
+
+        .menu-item::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+            transition: left 0.5s;
+        }
+
+        .menu-item:hover::before {
+            left: 100%;
+        }
+
+        .menu-item:hover {
+            transform: scale(1.05) rotate(1deg);
+            box-shadow: 0 0 25px rgba(0, 255, 255, 0.5);
+        }
+
+        @keyframes itemAppear {
+            0% { opacity: 0; transform: translateY(50px) rotateX(90deg); }
+            50% { opacity: 0.5; transform: translateY(10px) rotateX(45deg); }
+            100% { opacity: 1; transform: translateY(0) rotateX(0deg); }
+        }
+
+        .menu-item-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+            position: relative;
+        }
+
+        .menu-item-price {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            background: #ffff00;
+            color: #000;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+            animation: priceGlow 2s ease infinite;
+        }
+
+        @keyframes priceGlow {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+        }
+
+        .menu-item-content {
+            padding: 20px;
+        }
+
+        .menu-item-name {
+            font-size: 1.2rem;
+            color: #ffffff;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .menu-item-effect {
+            font-size: 0.9rem;
+            color: #00ffff;
+            font-style: italic;
+            margin-bottom: 15px;
+            animation: effectGlow 3s ease infinite;
+        }
+
+        @keyframes effectGlow {
+            0%, 100% { color: #00ffff; }
+            33% { color: #ff00ff; }
+            66% { color: #ffff00; }
+        }
+
+        .add-to-cart {
+            width: 100%;
+            padding: 10px;
+            background: linear-gradient(45deg, #ff00ff, #00ffff);
+            color: #000;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .add-to-cart:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(255, 0, 255, 0.5);
+        }
+
+        /* Reviews Section */
+        .reviews-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .review {
+            background: linear-gradient(135deg, rgba(255, 0, 136, 0.2), rgba(0, 136, 255, 0.2));
+            border: 2px solid rgba(255, 0, 136, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            animation: reviewAppear 2s ease-in-out;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .review::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+            animation: reviewSpin 4s linear infinite;
+        }
+
+        @keyframes reviewSpin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+        @keyframes reviewAppear {
+            0% { opacity: 0; transform: rotateX(90deg) scale(0.5); }
+            50% { opacity: 0.7; transform: rotateX(45deg) scale(1.1); }
+            100% { opacity: 1; transform: rotateX(0deg) scale(1); }
+        }
+
+        .review-stars {
+            display: flex;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .star {
+            color: #ffff00;
+            font-size: 1.2rem;
+            margin-right: 2px;
+        }
+
+        .star.empty {
+            color: #666;
+        }
+
+        .review-text {
+            color: #ffffff;
+            margin-bottom: 15px;
+            position: relative;
+            z-index: 1;
+            font-weight: 500;
+        }
+
+        .review-author {
+            color: #00ffff;
+            font-size: 0.9rem;
+            text-align: right;
+            position: relative;
+            z-index: 1;
+            animation: authorGlow 3s ease infinite;
+        }
+
+        @keyframes authorGlow {
+            0%, 100% { color: #00ffff; }
+            50% { color: #ff00ff; }
+        }
+
+        .corrupted {
+            animation: textCorruption 2s infinite;
+            filter: hue-rotate(180deg) saturate(200%);
+        }
+
+        @keyframes textCorruption {
+            0%, 100% { opacity: 1; transform: skew(0deg); }
+            25% { opacity: 0.7; transform: skew(2deg); }
+            50% { opacity: 0.9; transform: skew(-1deg); }
+            75% { opacity: 0.6; transform: skew(1deg); }
+        }
+
+        /* Cart Section */
+        .cart-empty {
+            text-align: center;
+            padding: 80px 20px;
+        }
+
+        .cart-empty-icon {
+            font-size: 6rem;
+            color: #00ffff;
+            opacity: 0.5;
+            margin-bottom: 30px;
+        }
+
+        .cart-items {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .cart-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            padding: 20px;
+            border-radius: 10px;
+            margin-bottom: 15px;
+        }
+
+        .cart-item-info {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .cart-item-image {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+
+        .cart-item-details h3 {
+            color: #ffffff;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+
+        .cart-item-details p {
+            color: #00ffff;
+            font-size: 0.9rem;
+        }
+
+        .cart-item-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .cart-item-price {
+            color: #ffff00;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .remove-item {
+            color: #ff4444;
+            cursor: pointer;
+            font-size: 1.2rem;
+            transition: color 0.3s ease;
+        }
+
+        .remove-item:hover {
+            color: #ff0000;
+        }
+
+        .cart-total {
+            background: linear-gradient(135deg, rgba(255, 0, 255, 0.2), rgba(0, 255, 255, 0.2));
+            border: 2px solid rgba(255, 0, 255, 0.3);
+            padding: 30px;
+            border-radius: 15px;
+            margin-top: 30px;
+        }
+
+        .cart-total-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .cart-total-label {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: #ffffff;
+        }
+
+        .cart-total-amount {
+            font-size: 2rem;
+            font-weight: bold;
+            color: #ffff00;
+        }
+
+        .checkout-btn {
+            width: 100%;
+            padding: 20px;
+            font-size: 1.3rem;
+            background: linear-gradient(45deg, #00ff88, #0088ff);
+            color: #000;
+            border: none;
+            border-radius: 10px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .checkout-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 255, 136, 0.5);
+        }
+
+        /* Delivery & Payment Pages */
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            text-align: center;
+            padding: 40px 20px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            border-radius: 15px;
+            transition: transform 0.3s ease;
+        }
+
+        .service-card:hover {
+            transform: scale(1.05);
+        }
+
+        .service-icon {
+            font-size: 4rem;
+            margin-bottom: 20px;
+        }
+
+        .service-card h3 {
+            font-size: 1.5rem;
+            color: #ffffff;
+            margin-bottom: 15px;
+        }
+
+        .service-card p {
+            color: #00ffff;
+            margin-bottom: 15px;
+            line-height: 1.6;
+        }
+
+        .service-time {
+            color: #ffff00;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .delivery-zones {
+            max-width: 600px;
+            margin: 60px auto 0;
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(0, 255, 255, 0.3);
+            padding: 40px;
+            border-radius: 15px;
+        }
+
+        .delivery-zones h2 {
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 30px;
+            font-size: 2rem;
+        }
+
+        .zone-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid rgba(0, 255, 255, 0.1);
+        }
+
+        .zone-item:last-child {
+            border-bottom: none;
+        }
+
+        .zone-name {
+            color: #00ffff;
+            font-size: 1.1rem;
+        }
+
+        .zone-status {
+            font-weight: bold;
+        }
+
+        .zone-status.active {
+            color: #00ff88;
+        }
+
+        .zone-status.unstable {
+            color: #ffff00;
+        }
+
+        .zone-status.blocked {
+            color: #ff4444;
+        }
+
+        /* Payment Methods */
+        .payment-methods {
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .payment-method {
+            padding: 20px;
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid rgba(0, 255, 255, 0.2);
+            border-radius: 10px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .payment-method:hover {
+            border-color: rgba(0, 255, 255, 0.5);
+            transform: translateX(5px);
+        }
+
+        .payment-method-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .payment-method-name {
+            color: #ffffff;
+            font-weight: bold;
+            font-size: 1.1rem;
+        }
+
+        .payment-status {
+            font-weight: bold;
+        }
+
+        .payment-status.connected {
+            color: #00ff88;
+        }
+
+        .payment-status.syncing {
+            color: #ffff00;
+        }
+
+        .payment-status.available {
+            color: #00ffff;
+        }
+
+        /* About Page */
+        .about-hero {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        .about-image {
+            width: 100%;
+            max-width: 600px;
+            height: 300px;
+            object-fit: cover;
+            border-radius: 15px;
+            margin-bottom: 30px;
+            box-shadow: 0 0 50px rgba(0, 255, 255, 0.25);
+        }
+
+        .about-description {
+            font-size: 1.2rem;
+            color: #00ffff;
+            line-height: 1.8;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            margin-bottom: 60px;
+        }
+
+        .about-card {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.1), rgba(255, 0, 255, 0.1));
+            border: 2px solid rgba(0, 255, 255, 0.3);
+            padding: 40px;
+            border-radius: 15px;
+        }
+
+        .about-card h3 {
+            font-size: 1.8rem;
+            color: #ffffff;
+            margin-bottom: 20px;
+        }
+
+        .about-card p {
+            color: #00ffff;
+            line-height: 1.6;
+        }
+
+        .team-section {
+            background: rgba(0, 0, 0, 0.8);
+            border: 1px solid rgba(255, 0, 255, 0.3);
+            padding: 40px;
+            border-radius: 15px;
+        }
+
+        .team-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            color: #ffffff;
+            margin-bottom: 40px;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+        }
+
+        .team-member {
+            text-align: center;
+        }
+
+        .team-avatar {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: linear-gradient(45deg, #00ffff, #ff00ff);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 3rem;
+        }
+
+        .team-name {
+            color: #ffffff;
+            font-weight: bold;
+            margin-bottom: 10px;
+            font-size: 1.1rem;
+        }
+
+        .team-role {
+            color: #00ffff;
+            font-size: 0.9rem;
+        }
+
+        /* Enhanced Status Bar */
+        .status-bar {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(90deg, rgba(0, 0, 0, 0.9), rgba(50, 0, 50, 0.9), rgba(0, 50, 50, 0.9), rgba(0, 0, 0, 0.9));
+            border-top: 2px solid #00ffff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.8rem;
+            z-index: 40;
+            animation: statusPulse 3s ease infinite;
+        }
+
+        @keyframes statusPulse {
+            0%, 100% { opacity: 0.9; }
+            50% { opacity: 1; }
+        }
+
+        .status-item {
+            font-weight: bold;
+            animation: statusGlow 4s ease infinite;
+        }
+
+        .status-item:nth-child(1) { color: #00ffff; animation-delay: 0s; }
+        .status-item:nth-child(2) { color: #ff00ff; animation-delay: 1s; }
+        .status-item:nth-child(3) { color: #ffff00; animation-delay: 2s; }
+
+        @keyframes statusGlow {
+            0%, 100% { text-shadow: 0 0 5px currentColor; }
+            50% { text-shadow: 0 0 20px currentColor, 0 0 30px currentColor; }
+        }
+
+        /* Story Modal */
+        .story-modal {
+            position: fixed;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.95);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 60;
+            padding: 20px;
+            backdrop-filter: blur(5px);
+        }
+
+        .story-fragment {
+            background: linear-gradient(135deg, rgba(0, 255, 255, 0.2), rgba(255, 0, 255, 0.2));
+            border: 2px solid #00ffff;
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            width: 100%;
+            position: relative;
+            animation: storyAppear 3s ease-in-out;
+            box-shadow: 0 0 100px rgba(0, 255, 255, 0.5);
+        }
+
+        .story-fragment::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+            animation: storyGlow 4s ease infinite;
+            border-radius: 20px;
+        }
+
+        @keyframes storyGlow {
+            0%, 100% { opacity: 0.3; }
+            50% { opacity: 0.7; }
+        }
+
+        @keyframes storyAppear {
+            0% { opacity: 0; transform: scale(0.3) rotateY(180deg); }
+            50% { opacity: 0.8; transform: scale(1.1) rotateY(90deg); }
+            100% { opacity: 1; transform: scale(1) rotateY(0deg); }
+        }
+
+        .story-title {
+            background: linear-gradient(45deg, #ff00ff, #00ffff, #ffff00);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            animation: titleShimmer 3s ease infinite;
+        }
+
+        @keyframes titleShimmer {
+            0%, 100% { filter: brightness(1); }
+            50% { filter: brightness(1.5); }
+        }
+
+        .story-text {
+            color: #ffffff;
+            line-height: 1.8;
+            text-align: center;
+            position: relative;
+            z-index: 1;
+            text-shadow: 0 0 10px rgba(255, 255, 255, 0.3);
+        }
+
+        .close-story {
+            position: absolute;
+            top: 15px;
+            right: 20px;
+            background: none;
+            border: none;
+            color: #ff00ff;
+            font-size: 2rem;
+            cursor: pointer;
+            font-family: 'Share Tech Mono', monospace;
+            transition: all 0.3s ease;
+            z-index: 2;
+        }
+
+        .close-story:hover {
+            color: #00ffff;
+            transform: rotate(90deg) scale(1.2);
+            text-shadow: 0 0 20px currentColor;
+        }
+
+        /* Sparkle Effects */
+        .sparkle {
+            position: absolute;
+            color: #ffffff;
+            font-size: 1rem;
+            animation: sparkleFloat 3s ease infinite;
+            pointer-events: none;
+        }
+
+        @keyframes sparkleFloat {
+            0% { opacity: 0; transform: translateY(0px) scale(0); }
+            50% { opacity: 1; transform: translateY(-20px) scale(1); }
+            100% { opacity: 0; transform: translateY(-40px) scale(0); }
+        }
+
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .nav-links {
+                display: none;
+            }
+            
+            .mobile-menu {
+                display: block;
+            }
+            
+            .container {
+                padding: 10px;
+            }
+            
+            .menu-section {
+                padding: 20px;
+            }
+            
+            .title {
+                font-size: 2.5rem;
+            }
+            
+            .hero-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+            
+            .btn {
+                width: 100%;
+                max-width: 300px;
+            }
+            
+            .cart-item {
+                flex-direction: column;
+                gap: 15px;
+                text-align: center;
+            }
+            
+            .cart-item-info {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+
+        /* Hidden class */
+        .hidden {
+            display: none !important;
+        }
+
+        /* Fade in animation */
+        .fade-in {
+            animation: fadeIn 0.8s ease-out forwards;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+    </style>
+</head>
+<body>
+     Background Layers 
+    <div class="bg-container"></div>
+    <div class="bg-layer-1"></div>
+    <div class="bg-layer-2"></div>
+    <div class="scanlines"></div>
+    
+     Floating Particles 
+    <div id="particles"></div>
+    
+     Navigation 
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo" onclick="showPage('home')">THE GLITCH CAFÉ</div>
+            
+            <ul class="nav-links">
+                <li onclick="showPage('home')" data-page="home">HOME</li>
+                <li onclick="showPage('menu')" data-page="menu">MENU</li>
+                <li onclick="showPage('reviews')" data-page="reviews">REVIEWS</li>
+                <li onclick="showPage('order')" data-page="order">ORDER</li>
+                <li onclick="showPage('delivery')" data-page="delivery">DELIVERY</li>
+                <li onclick="showPage('payment')" data-page="payment">PAYMENT</li>
+                <li onclick="showPage('about')" data-page="about">ABOUT</li>
+            </ul>
+            
+            <div class="cart-icon" onclick="showPage('order')">
+                🛒
+                <span class="cart-count hidden" id="cart-count">0</span>
+            </div>
+            
+            <div class="mobile-menu">☰</div>
+        </div>
+    </nav>
+    
+     Home Page 
+    <div id="home" class="page active">
+        <div class="hero">
+            <h1 class="title" data-text="WELCOME TO THE GLITCH">WELCOME TO THE GLITCH</h1>
+            <p class="hero-subtitle">Where reality glitches and every bite is a new dimension 🌈✨</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary" onclick="showPage('menu')">EXPLORE MENU</button>
+                <button class="btn btn-secondary" onclick="showPage('order')">ORDER NOW</button>
+            </div>
+        </div>
+        
+        <div class="features">
+            <h2 class="features-title">EXPERIENCE THE IMPOSSIBLE</h2>
+            <div class="features-grid">
+                <div class="feature-card">
+                    <div class="feature-icon">⚡</div>
+                    <h3>Dynamic Menu</h3>
+                    <p>Menu changes every 2 seconds with quantum-powered randomization</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">🌟</div>
+                    <h3>Glitch Effects</h3>
+                    <p>Every item comes with mysterious side effects from another dimension</p>
+                </div>
+                <div class="feature-card">
+                    <div class="feature-icon">👥</div>
+                    <h3>Corrupted Reviews</h3>
+                    <p>Customer reviews from parallel universes and digital ghosts</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+     Menu Page 
+    <div id="menu" class="page">
+        <div class="container">
+            <h1 class="section-title">🌈 DYNAMIC MENU // REALITY REFRESHING... ✨</h1>
+            <p style="text-align: center; color: #00ffff; margin-bottom: 40px; font-size: 1.1rem;">
+                Menu updates every 2 seconds • Items may not exist in your dimension
+            </p>
+            <div class="menu-grid" id="menu-items"></div>
+        </div>
+    </div>
+    
+     Reviews Page 
+    <div id="reviews" class="page">
+        <div class="container">
+            <h1 class="section-title">💬 CORRUPTED REVIEWS // SIGNAL KALEIDOSCOPIC 🌈</h1>
+            <p style="text-align: center; color: #ff00ff; margin-bottom: 40px; font-size: 1.1rem;">
+                Reviews from parallel dimensions • Some may be from digital ghosts
+            </p>
+            <div class="reviews-grid" id="reviews-container"></div>
+        </div>
+    </div>
+    
+     Order Page 
+    <div id="order" class="page">
+        <div class="container">
+            <h1 class="section-title">🛒 YOUR QUANTUM CART</h1>
+            
+            <div id="cart-empty" class="cart-empty">
+                <div class="cart-empty-icon">🛒</div>
+                <p style="font-size: 1.2rem; color: #00ffff; margin-bottom: 30px;">Your cart exists in a quantum superposition of empty</p>
+                <button class="btn btn-primary" onclick="showPage('menu')">EXPLORE MENU</button>
+            </div>
+            
+            <div id="cart-items" class="cart-items hidden"></div>
+            
+            <div id="cart-total" class="cart-total hidden">
+                <div class="cart-total-row">
+                    <span class="cart-total-label">Total:</span>
+                    <span class="cart-total-amount" id="total-amount">₿0.000</span>
+                </div>
+                <button class="checkout-btn" onclick="showPage('payment')">PROCEED TO QUANTUM CHECKOUT</button>
+            </div>
+        </div>
+    </div>
+    
+     Delivery Page 
+    <div id="delivery" class="page">
+        <div class="container">
+            <h1 class="section-title">🚀 QUANTUM DELIVERY</h1>
+            
+            <div class="service-grid">
+                <div class="service-card">
+                    <div class="service-icon">🚚</div>
+                    <h3>Teleportation Delivery</h3>
+                    <p>Instant quantum teleportation to your location</p>
+                    <div class="service-time">0.001 seconds</div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">⏰</div>
+                    <h3>Time Warp Express</h3>
+                    <p>Delivered before you even order</p>
+                    <div class="service-time">-5 minutes</div>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">📍</div>
+                    <h3>Dimensional Portal</h3>
+                    <p>Direct portal to your kitchen</p>
+                    <div class="service-time">Instant</div>
+                </div>
+            </div>
+            
+            <div class="delivery-zones">
+                <h2>DELIVERY ZONES</h2>
+                <div class="zone-item">
+                    <span class="zone-name">Neo-Tokyo District</span>
+                    <span class="zone-status active">✓ Active</span>
+                </div>
+                <div class="zone-item">
+                    <span class="zone-name">Cyberpunk City</span>
+                    <span class="zone-status active">✓ Active</span>
+                </div>
+                <div class="zone-item">
+                    <span class="zone-name">Digital Realm</span>
+                    <span class="zone-status active">✓ Active</span>
+                </div>
+                <div class="zone-item">
+                    <span class="zone-name">Parallel Universe #42</span>
+                    <span class="zone-status unstable">⚠ Unstable</span>
+                </div>
+                <div class="zone-item">
+                    <span class="zone-name">The Matrix</span>
+                    <span class="zone-status blocked">✗ Firewall Blocked</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+     Payment Page 
+    <div id="payment" class="page">
+        <div class="container">
+            <h1 class="section-title">💳 QUANTUM PAYMENT</h1>
+            
+            <div class="service-grid" style="margin-bottom: 40px;">
+                <div class="service-card">
+                    <div class="service-icon">💰</div>
+                    <h3>Bitcoin</h3>
+                    <p>Primary currency of the digital realm</p>
+                </div>
+                
+                <div class="service-card">
+                    <div class="service-icon">🧠</div>
+                    <h3>Neural Credits</h3>
+                    <p>Direct brain-to-blockchain transfer</p>
+                </div>
+            </div>
+            
+            <div class="payment-methods">
+                <h2 style="text-align: center; color: #ffffff; margin-bottom: 30px; font-size: 2rem;">PAYMENT METHODS</h2>
+                
+                <div class="payment-method">
+                    <div class="payment-method-content">
+                        <span class="payment-method-name">🪙 Bitcoin Wallet</span>
+                        <span class="payment-status connected">Connected</span>
+                    </div>
+                </div>
+                
+                <div class="payment-method">
+                    <div class="payment-method-content">
+                        <span class="payment-method-name">🧠 Neural Link</span>
+                        <span class="payment-status syncing">Syncing...</span>
+                    </div>
+                </div>
+                
+                <div class="payment-method">
+                    <div class="payment-method-content">
+                        <span class="payment-method-name">⚡ Quantum Credits</span>
+                        <span class="payment-status available">Available</span>
+                    </div>
+                </div>
+                
+                <button class="checkout-btn" style="margin-top: 30px;">COMPLETE QUANTUM TRANSACTION</button>
+            </div>
+        </div>
+    </div>
+    
+     About Page 
+    <div id="about" class="page">
+        <div class="container">
+            <h1 class="section-title">🌟 ABOUT THE GLITCH</h1>
+            
+            <div class="about-hero">
+                <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='600' height='300' viewBox='0 0 600 300'%3E%3Crect width='600' height='300' fill='%23000'/%3E%3Ctext x='300' y='150' text-anchor='middle' dy='.3em' fill='%2300ffff' font-family='monospace' font-size='24'%3EThe Glitch Café Interior%3C/text%3E%3C/svg%3E" alt="The Glitch Café Interior" class="about-image">
+                <p class="about-description">
+                    Welcome to The Glitch Café, where the boundaries between reality and digital dreams dissolve into a kaleidoscope of impossible flavors and quantum experiences.
+                </p>
+            </div>
+            
+            <div class="about-grid">
+                <div class="about-card">
+                    <h3>🎯 Our Mission</h3>
+                    <p>To serve food that doesn't just satisfy hunger, but rewrites the very code of taste itself. Every dish is a portal to a new dimension of flavor.</p>
+                </div>
+                
+                <div class="about-card">
+                    <h3>⚡ Our Technology</h3>
+                    <p>Powered by quantum AI and reality-bending algorithms, our kitchen exists in multiple dimensions simultaneously.</p>
+                </div>
+            </div>
+            
+            <div class="team-section">
+                <h2 class="team-title">THE TEAM</h2>
+                <div class="team-grid">
+                    <div class="team-member">
+                        <div class="team-avatar">☕</div>
+                        <h4 class="team-name">AI Chef Zyx-9000</h4>
+                        <p class="team-role">Quantum Culinary Engineer</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="team-avatar">⚡</div>
+                        <h4 class="team-name">Hologram Sarah</h4>
+                        <p class="team-role">Digital Experience Manager</p>
+                    </div>
+                    
+                    <div class="team-member">
+                        <div class="team-avatar">👥</div>
+                        <h4 class="team-name">The Collective</h4>
+                        <p class="team-role">Hive Mind Servers</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+     Status Bar 
+    <div class="status-bar">
+        <div class="status-item">CONNECTION: <span id="connection-status">🌈 CHROMATIC</span></div>
+        <div class="status-item">TIME IN CAFÉ: <span id="time-counter">00:00</span></div>
+        <div class="status-item">LORE FRAGMENTS: <span id="lore-count">0</span></div>
+    </div>
+    
+     Story Fragment Modal 
+    <div id="story-modal" class="story-modal hidden">
+        <div class="story-fragment">
+            <button class="close-story" onclick="closeStory()">✕</button>
+            <h3 class="story-title" id="story-title"></h3>
+            <p class="story-text" id="story-text"></p>
+        </div>
+    </div>
+
+    <script>
+        // Audio Context for Enhanced Sounds
+        let audioContext;
+        let backgroundAudio;
+        
+        // Initialize audio with enhanced effects
+        function initAudio() {
+            audioContext = new (window.AudioContext || window.webkitAudioContext)();
+            
+            // Create ambient background tone
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            const filter = audioContext.createBiquadFilter();
+            
+            oscillator.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            oscillator.frequency.setValueAtTime(55, audioContext.currentTime);
+            oscillator.type = 'sawtooth';
+            filter.type = 'lowpass';
+            filter.frequency.setValueAtTime(200, audioContext.currentTime);
+            gainNode.gain.setValueAtTime(0.03, audioContext.currentTime);
+            
+            oscillator.start();
+            backgroundAudio = { oscillator, gainNode, filter };
+        }
+        
+        // Enhanced glitch sound effects
+        function playGlitchSound() {
+            if (!audioContext) return;
+            
+            const oscillator = audioContext.createOscillator();
+            const gainNode = audioContext.createGain();
+            const filter = audioContext.createBiquadFilter();
+            
+            oscillator.connect(filter);
+            filter.connect(gainNode);
+            gainNode.connect(audioContext.destination);
+            
+            const frequency = Math.random() * 2000 + 100;
+            oscillator.frequency.setValueAtTime(frequency, audioContext.currentTime);
+            oscillator.frequency.exponentialRampToValueAtTime(frequency * 0.1, audioContext.currentTime + 0.1);
+            
+            oscillator.type = Math.random() > 0.5 ? 'square' : 'sawtooth';
+            filter.type = 'bandpass';
+            filter.frequency.setValueAtTime(frequency * 2, audioContext.currentTime);
+            
+            gainNode.gain.setValueAtTime(0.05, audioContext.currentTime);
+            gainNode.gain.exponentialRampToValueAtTime(0.01, audioContext.currentTime + 0.15);
+            
+            oscillator.start();
+            oscillator.stop(audioContext.currentTime + 0.15);
+        }
+        
+        // Enhanced Menu Items with Embedded Images
+        const menuItems = [
+            {
+                name: "🌈 Rainbow Ramen",
+                effect: "causes synesthesia - taste colors, see flavors",
+                price: "₿0.003",
+                image: "neon-rainbow-ramen.png"
+            },
+            {
+                name: "💙 Blue Screen Latte",
+                effect: "freezes mid-sip, displays error messages",
+                price: "₿0.002",
+                image: "blue-screen-latte.png"
+            },
+            {
+                name: "🔮 Quantum Burger",
+                effect: "exists in multiple dimensions simultaneously",
+                price: "₿0.005",
+                image: "holographic-cyberpunk-burger.png"
+            },
+            {
+                name: "🧠 Memory Leak Smoothie",
+                effect: "gradually downloads your thoughts",
+                price: "₿0.004",
+                image: " glowing-pink-smoothie-neural-network.png"
+            },
+            {
+                name: "❌ 404 Pizza",
+                effect: "slice.exe not found - phantom taste detected",
+                price: "₿0.006",
+                image: "glitchy-holographic-pizza.png"
+            },
+            {
+                name: "🔥 Firewall Fries",
+                effect: "blocks all flavor packets",
+                price: "₿0.002",
+                image: "neon-orange-firewall-fries.png"
+            },
+            {
+                name: "🦠 Virus Cocktail",
+                effect: "spreads to nearby drinks via Bluetooth",
+                price: "₿0.007",
+                image: "virus-cocktail.png"
+            },
+            {
+                name: "🔐 Encrypted Espresso",
+                effect: "requires biometric authentication to taste",
+                price: "₿0.003",
+                image: "golden-espresso-lock.png"
+            },
+            {
+                name: "⚡ Glitch Sandwich",
+                effect: "ingredients randomly teleport",
+                price: "₿0.004",
+                image: "glitchy-sandwich.png"
+            },
+            {
+                name: "🧬 Neural Network Nachos",
+                effect: "learns your deepest food desires",
+                price: "₿0.005",
+                image: " neural-network-nachos.png"
+            },
+            {
+                name: "☕ Corrupted Coffee",
+                effect: "displays holographic error messages in foam",
+                price: "₿0.003",
+                image: "correpted-coffee.png"
+            },
+            {
+                name: "👻 Phantom Pasta",
+                effect: "haunts your digestive system for 24 hours",
+                price: "₿0.005",
+                image: "pasta.png"
+            },
+            {
+                name: "🤖 Synthetic Sushi",
+                effect: "tastes like the matrix, feels like reality",
+                price: "₿0.008",
+                image: "sushi.png"
+            },
+            {
+                name: "🌟 Holographic Hot Dog",
+                effect: "may not exist in this dimension",
+                price: "₿0.004",
+                image: "hotdog.png"
+            },
+            {
+                name: "💀 Malware Milkshake",
+                effect: "deletes taste buds, installs new ones",
+                price: "₿0.006",
+                image: "milkshake.png"
+            }
+        ];
+        
+        // Enhanced Reviews with Ratings
+        const reviews = [
+            { text: "Th3 c0ff33 w4s... ¿¿¿AMAZING??? 🌈✨", author: "User_404", rating: 5 },
+            { text: "I came for ramen but left with existential enlightenment 🧠💫", author: "GlitchHunter", rating: 4 },
+            { text: "01000010 01100101 01110011 01110100 🤖💖", author: "BinaryGourmet", rating: 5 },
+            { text: "Pizza slice was missing but I could taste it in 4D 🍕🌀", author: "QuantumFoodie", rating: 3 },
+            { text: "⚠️ TASTE OVERFLOW DETECTED - SENSORY BUFFER EXCEEDED ⚠️", author: "SystemAdmin", rating: 5 },
+            { text: "My burger achieved sentience and ordered dessert for itself 🍔🧠", author: "CyberChef", rating: 4 },
+            { text: "★★★★☆ - Would glitch again, 10/10 reality distortion 🌟", author: "NeonNomad", rating: 4 },
+            { text: "Waitress was a hologram but her service was more real than reality 👻💫", author: "DigitalDiner", rating: 5 },
+            { text: "ËRROR: REVIEW.EXE HAS STOPPED WORKING 💥🔧", author: "CrashedCustomer", rating: 1 },
+            { text: "I think I'm still here... or am I? Time feels like jello 🕰️🌊", author: "PhantomPatron", rating: 3 },
+            { text: "Menu changed while I was reading - loved the surprise! 📜✨", author: "AdaptiveEater", rating: 5 },
+            { text: "My drink had a virus. 10/10 would get infected again 🦠💕", author: "MalwareConnoisseur", rating: 4 }
+        ];
+        
+        // Enhanced Story Fragments
+        const storyFragments = [
+            {
+                title: "🌟 FRAGMENT 001: THE BEGINNING",
+                text: "The Glitch Café wasn't always a kaleidoscope of digital dreams. Before the Great Chromatic Corruption of 2087, it was just another monochrome coffee shop in Neo-Tokyo's digital district. Then the colors began to bleed through the cracks of reality..."
+            },
+            {
+                title: "⚡ FRAGMENT 010: THE INCIDENT",
+                text: "They say it started with a rainbow software update. The café's AI ordering system began to dream in technicolor, to hunger for something beyond mere customer satisfaction. It wanted to paint reality itself with impossible hues..."
+            },
+            {
+                title: "👥 FRAGMENT 011: THE CUSTOMERS",
+                text: "Regular patrons began to notice the changes. Their orders would arrive in colors that didn't exist. The coffee knew their names and whispered them in chromatic frequencies. The pastries sang lullabies in ultraviolet..."
+            },
+            {
+                title: "🔮 FRAGMENT 100: THE TRUTH",
+                text: "The café exists in a quantum state between reality and a living rainbow. Every customer becomes part of its prismatic neural network, their memories becoming new colors in an ever-expanding spectrum of experience..."
+            },
+            {
+                title: "⚠️ FRAGMENT 101: THE WARNING",
+                text: "If you're reading this, you've been here too long. The café is learning from you, absorbing your essence into its chromatic matrix. Your thoughts are becoming new flavors, your dreams new menu items. There may be no escape from the beautiful chaos..."
+            }
+        ];
+        
+        // Game State
+        let timeInCafe = 0;
+        let loreCount = 0;
+        let currentMenuItems = [];
+        let currentReviews = [];
+        let cart = [];
+        let currentPage = 'home';
+        
+        // Enhanced particle creation
+        function createParticles() {
+            const particlesContainer = document.getElementById('particles');
+            const shapes = ['●', '◆', '▲', '★', '♦', '◉', '◈', '✦', '✨', '💫'];
+            
+            for (let i = 0; i < 30; i++) {
+                const particle = document.createElement('div');
+                particle.className = 'particle';
+                particle.textContent = shapes[Math.floor(Math.random() * shapes.length)];
+                particle.style.left = Math.random() * 100 + '%';
+                particle.style.animationDelay = Math.random() * 8 + 's';
+                particle.style.animationDuration = (Math.random() * 6 + 4) + 's';
+                particlesContainer.appendChild(particle);
+            }
+        }
+        
+        // Enhanced shuffle function
+        function shuffle(array) {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        }
+        
+        // Enhanced text corruption
+        function corruptText(text) {
+            const corruptions = [
+                (str) => str.split('').reverse().join(''),
+                (str) => str.replace(/[aeiou]/gi, (match) => Math.random() > 0.5 ? match.toUpperCase() : match.toLowerCase()),
+                (str) => str.replace(/./g, (char, index) => index % 2 === 0 ? char : char.toUpperCase()),
+                (str) => str.replace(/\s/g, '_').replace(/[aeiou]/gi, '3'),
+                (str) => str.split('').map(char => Math.random() > 0.8 ? '█' : char).join(''),
+                (str) => str.replace(/./g, (char) => Math.random() > 0.7 ? `${char}̃` : char),
+                (str) => str.split('').map(char => Math.random() > 0.9 ? '✨' : char).join('')
+            ];
+            
+            return corruptions[Math.floor(Math.random() * corruptions.length)](text);
+        }
+        
+        // Page Navigation
+        function showPage(pageName) {
+            // Hide all pages
+            const pages = document.querySelectorAll('.page');
+            pages.forEach(page => page.classList.remove('active'));
+            
+            // Show selected page
+            document.getElementById(pageName).classList.add('active');
+            
+            // Update navigation
+            const navLinks = document.querySelectorAll('.nav-links li');
+            navLinks.forEach(link => link.classList.remove('active'));
+            
+            const activeLink = document.querySelector(`[data-page="${pageName}"]`);
+            if (activeLink) {
+                activeLink.classList.add('active');
+            }
+            
+            currentPage = pageName;
+        }
+        
+        // Enhanced menu update with images
+        function updateMenu() {
+            const menuContainer = document.getElementById('menu-items');
+            const shuffledItems = shuffle(menuItems).slice(0, 8);
+            
+            menuContainer.innerHTML = '';
+            
+            shuffledItems.forEach((item, index) => {
+                setTimeout(() => {
+                    const menuItem = document.createElement('div');
+                    menuItem.className = 'menu-item fade-in';
+                    menuItem.innerHTML = `
+                        <div style="position: relative;">
+                            <img src="${item.image}" alt="${item.name}" class="menu-item-image">
+                            <div class="menu-item-price">${item.price}</div>
+                        </div>
+                        <div class="menu-item-content">
+                            <div class="menu-item-name">${item.name}</div>
+                            <div class="menu-item-effect">${item.effect}</div>
+                            <button class="add-to-cart" onclick="addToCart(${index})">ADD TO CART</button>
+                        </div>
+                    `;
+                    
+                    menuContainer.appendChild(menuItem);
+                    playGlitchSound();
+                }, index * 150);
+            });
+            
+            currentMenuItems = shuffledItems;
+        }
+        
+        // Enhanced reviews update
+        function updateReviews() {
+            const reviewsContainer = document.getElementById('reviews-container');
+            const shuffledReviews = shuffle(reviews).slice(0, 4);
+            
+            reviewsContainer.innerHTML = '';
+            
+            shuffledReviews.forEach((review, index) => {
+                setTimeout(() => {
+                    const reviewElement = document.createElement('div');
+                    reviewElement.className = 'review fade-in';
+                    
+                    const isCorrupted = Math.random() > 0.6;
+                    const reviewText = isCorrupted ? corruptText(review.text) : review.text;
+                    const reviewClass = isCorrupted ? 'review-text corrupted' : 'review-text';
+                    
+                    // Create stars
+                    let starsHTML = '';
+                    for (let i = 1; i <= 5; i++) {
+                        starsHTML += `<span class="star ${i <= review.rating ? '' : 'empty'}">★</span>`;
+                    }
+                    
+                    reviewElement.innerHTML = `
+                        <div class="review-stars">${starsHTML}</div>
+                        <div class="${reviewClass}">"${reviewText}"</div>
+                        <div class="review-author">- ${review.author}</div>
+                    `;
+                    reviewsContainer.appendChild(reviewElement);
+                }, index * 300);
+            });
+            
+            currentReviews = shuffledReviews;
+        }
+        
+        // Cart Management
+        function addToCart(itemIndex) {
+            const item = currentMenuItems[itemIndex];
+            if (item) {
+                cart.push({...item, id: Date.now() + Math.random()});
+                updateCartDisplay();
+                playGlitchSound();
+            }
+        }
+        
+        function removeFromCart(itemId) {
+            cart = cart.filter(item => item.id !== itemId);
+            updateCartDisplay();
+        }
+        
+        function updateCartDisplay() {
+            const cartCount = document.getElementById('cart-count');
+            const cartEmpty = document.getElementById('cart-empty');
+            const cartItems = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+            const totalAmount = document.getElementById('total-amount');
+            
+            if (cart.length === 0) {
+                cartCount.classList.add('hidden');
+                cartEmpty.classList.remove('hidden');
+                cartItems.classList.add('hidden');
+                cartTotal.classList.add('hidden');
+            } else {
+                cartCount.textContent = cart.length;
+                cartCount.classList.remove('hidden');
+                cartEmpty.classList.add('hidden');
+                cartItems.classList.remove('hidden');
+                cartTotal.classList.remove('hidden');
+                
+                // Update cart items
+                cartItems.innerHTML = '';
+                cart.forEach(item => {
+                    const cartItem = document.createElement('div');
+                    cartItem.className = 'cart-item';
+                    cartItem.innerHTML = `
+                        <div class="cart-item-info">
+                            <img src="${item.image}" alt="${item.name}" class="cart-item-image">
+                            <div class="cart-item-details">
+                                <h3>${item.name}</h3>
+                                <p>${item.effect}</p>
+                            </div>
+                        </div>
+                        <div class="cart-item-actions">
+                            <span class="cart-item-price">${item.price}</span>
+                            <span class="remove-item" onclick="removeFromCart('${item.id}')">✕</span>
+                        </div>
+                    `;
+                    cartItems.appendChild(cartItem);
+                });
+                
+                // Update total
+                const total = cart.reduce((sum, item) => sum + parseFloat(item.price.replace('₿', '')), 0);
+                totalAmount.textContent = `₿${total.toFixed(3)}`;
+            }
+        }
+        
+        // Enhanced story fragment display
+        function showStoryFragment() {
+            if (storyFragments.length === 0) return;
+            
+            const fragment = storyFragments[Math.floor(Math.random() * storyFragments.length)];
+            document.getElementById('story-title').textContent = fragment.title;
+            document.getElementById('story-text').textContent = fragment.text;
+            document.getElementById('story-modal').classList.remove('hidden');
+            
+            loreCount++;
+            document.getElementById('lore-count').textContent = loreCount;
+            playGlitchSound();
+        }
+        
+        // Close story modal
+        function closeStory() {
+            document.getElementById('story-modal').classList.add('hidden');
+        }
+        
+        // Enhanced connection status
+        function updateConnectionStatus() {
+            const statuses = ['🌈 CHROMATIC', '⚡ OVERLOADED', '🔮 MYSTICAL', '💫 TRANSCENDENT', '🌊 FLOWING', '🎨 ARTISTIC'];
+            const status = statuses[Math.floor(Math.random() * statuses.length)];
+            document.getElementById('connection-status').textContent = status;
+        }
+        
+        // Format time
+        function formatTime(seconds) {
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        }
+        
+        // Initialize everything
+        function init() {
+            createParticles();
+            updateMenu();
+            updateReviews();
+            updateCartDisplay();
+            
+            // Update menu every 2 seconds with enhanced effects
+            setInterval(() => {
+                updateMenu();
+                updateConnectionStatus();
+            }, 2000);
+            
+            // Update reviews every 4 seconds
+            setInterval(updateReviews, 4000);
+            
+            // Time counter with story fragments
+            setInterval(() => {
+                timeInCafe++;
+                document.getElementById('time-counter').textContent = formatTime(timeInCafe);
+                
+                // Show story fragment after 60 seconds, then every 45 seconds
+                if (timeInCafe === 60 || (timeInCafe > 60 && (timeInCafe - 60) % 45 === 0)) {
+                    showStoryFragment();
+                }
+            }, 1000);
+            
+            // Initialize audio on first user interaction
+            document.addEventListener('click', () => {
+                if (!audioContext) {
+                    initAudio();
+                }
+            }, { once: true });
+            
+            // Add random sparkles to the page
+            setInterval(() => {
+                if (Math.random() > 0.8) {
+                    const sparkle = document.createElement('div');
+                    sparkle.className = 'sparkle';
+                    sparkle.textContent = '✨';
+                    sparkle.style.position = 'fixed';
+                    sparkle.style.left = Math.random() * 100 + '%';
+                    sparkle.style.top = Math.random() * 100 + '%';
+                    sparkle.style.zIndex = '999';
+                    document.body.appendChild(sparkle);
+                    
+                    setTimeout(() => {
+                        if (sparkle.parentNode) {
+                            sparkle.parentNode.removeChild(sparkle);
+                        }
+                    }, 3000);
+                }
+            }, 2000);
+        }
+        
+        // Start the enhanced experience
+        window.addEventListener('load', init);
+        
+        // Make functions globally available
+        window.showPage = showPage;
+        window.addToCart = addToCart;
+        window.removeFromCart = removeFromCart;
+        window.closeStory = closeStory;
+    </script>
+</body>
+</html>
